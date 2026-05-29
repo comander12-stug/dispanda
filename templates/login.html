@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SISTEM Dispensasi MAN 2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100 h-screen flex items-center justify-center font-sans">
+    <div class="bg-white p-8 rounded-xl shadow-lg w-96 border border-slate-200">
+      <div class="text-center mb-6">
+        <img src="{{ url_for('static', filename='images/logo_man2.png') }}"
+          alt="Logo MAN 2"
+          class="w-24 h-24 object-contain mx-auto mb-3 shadow-sm border rounded-full">
+
+        <h2 class="text-xl font-bold text-blue-950">DISPANDA</h2>
+        <p class="text-sm text-slate-500 font-medium">DISPENSASI MAN 2 KOTA KEDIRI</p>
+      </div>
+        <form method="POST" class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Username</label>
+                <input type="text" name="username" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-800" placeholder="Masukkan username" required>
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Password</label>
+                <input type="password" name="password" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-800" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="w-full py-2.5 bg-blue-900 hover:bg-blue-950 text-white font-semibold rounded-lg shadow transition">Masuk ke Sistem</button>
+        </form>
+        <div class="mt-6 p-3 bg-slate-50 border border-slate-200 rounded-lg text-center">
+            <p class="text-[11px] text-slate-500 font-mono">Selamat menjalani harimu, semoga bahagia selalu.</p>
+            <p class="text-[11px] text-slate-500 font-mono">-Kelompok 2</p>
+        </div>
+    </div>
+</body>
+</html>

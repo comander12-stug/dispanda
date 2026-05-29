@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Siswa - MAN 2 Kota Kediri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        function updateDateTime() {
+            const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+            const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+            const now = new Date();
+            const dayName = days[now.getDay()];
+            const date = now.getDate();
+            const monthName = months[now.getMonth()];
+            const year = now.getFullYear();
+
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+
+            document.getElementById('realtime-date').innerText = `${dayName}, ${date} ${monthName} ${year}`;
+            document.getElementById('realtime-clock').innerText = `${hours}:${minutes}:${seconds} WIB`;
+        }
+
+        window.onload = function() {
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+        }
+    </script>
+</head>
+<body class="bg-[#f4f7fc] font-sans min-h-screen flex">
+
+    <div class="w-60 bg-[#3b629b] text-white flex flex-col justify-between p-4 shrink-0 relative overflow-hidden">
+        <div>
+            <div class="flex items-center gap-2.5 border-b border-white/20 pb-4 mb-5">
+              <img src="{{ url_for('static', filename='images/logo_man2.png') }}" alt="Logo MAN 2" class="w-9 h-9 object-contain shrink-0 filter drop-shadow-md">
+              <div>
+                <h1 class="text-[11px] font-bold uppercase tracking-wider leading-tight">DISPANDA</h1>
+                <p class="text-[9px] text-blue-100 font-light tracking-wide">DISPENSASI MAN 2 KOTA KEDIRI</p>
+              </div>
+            </div>
+
+            <p class="text-[9px] font-bold text-blue-200/70 uppercase tracking-widest mb-2.5 px-2">Menu Utama</p>
+            <nav class="space-y-1">
+                <a href="#" class="flex items-center gap-3 px-3 py-2 text-xs font-bold rounded-xl bg-white text-[#3b629b] shadow-sm transition">
+                    <i class="fa-solid fa-house text-xs"></i> Dashboard
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2 text-xs font-medium text-blue-100 hover:bg-white/10 rounded-xl transition">
+                    <i class="fa-solid fa-clock-rotate-left text-xs"></i> Riwayat Dispensasi
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2 text-xs font-medium text-blue-100 hover:bg-white/10 rounded-xl transition">
+                    <i class="fa-solid fa-user text-xs"></i> Profil
+                </a>
+            </nav>
+        </div>
+
+        <div>
+            <a href="/logout" class="flex items-center gap-3 px-3 py-2 text-xs font-bold text-red-200 hover:bg-red-900/20 rounded-xl transition mb-2">
+                <i class="fa-solid fa-right-from-bracket text-xs"></i> Keluar
+            </a>
+        </div>
+    </div>
+
+    <div class="flex-1 flex flex-col overflow-hidden">
+
+        <header class="bg-white border-b border-slate-200 px-6 py-3.5 flex justify-between items-center shrink-0">
+            <div>
+                <h2 class="text-lg font-bold text-slate-800">Selamat datang, <span class="text-[#3b629b]">Siswa</span></h2>
+                <p class="text-[11px] text-slate-400 mt-0.5">Berikut adalah informasi dispensasi hari ini.</p>
+            </div>
+
+            <div class="flex items-center gap-2 text-slate-600 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200/60 text-[11px] font-semibold shadow-inner">
+                <i class="fa-solid fa-calendar-days text-[#3b629b]"></i>
+                <span id="realtime-date">Memuat tanggal...</span>
+                <span class="text-slate-300">|</span>
+                <span id="realtime-clock" class="font-mono text-slate-700">00:00:00 WIB</span>
+            </div>
+        </header>
+
+        <div class="flex-1 p-5 overflow-y-auto flex gap-5">
+
+            <div class="flex-1 space-y-5">
+                <div>
+                    <h3 class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2.5">Status Pengajuan Saya</h3>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="bg-[#dbeafe] border border-blue-200 rounded-xl p-3.5 flex items-center gap-2.5 shadow-sm">
+                            <div class="w-9 h-9 bg-[#3b82f6] rounded-lg flex items-center justify-center text-white text-base shadow-sm"><i class="fa-solid fa-file-invoice"></i></div>
+                            <div>
+                                <p class="text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">Total Pengajuan</p>
+                                <h4 class="text-lg font-black text-slate-800 leading-none">{{ riwayat|length }}</h4>
+                            </div>
+                        </div>
+
+                        <div class="bg-[#dcfce7] border border-emerald-200 rounded-xl p-3.5 flex items-center gap-2.5 shadow-sm">
+                            <div class="w-9 h-9 bg-[#10b981] rounded-lg flex items-center justify-center text-white text-base shadow-sm"><i class="fa-solid fa-circle-check"></i></div>
+                            <div>
+                                <p class="text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">Disetujui</p>
+                                <h4 class="text-lg font-black text-slate-800 leading-none">
+                                    {{ riwayat|selectattr('status_piket', 'equalto', 'setuju')|list|length }}
+                                </h4>
+                            </div>
+                        </div>
+
+                        <div class="bg-[#fee2e2] border border-rose-200 rounded-xl p-3.5 flex items-center gap-2.5 shadow-sm">
+                            <div class="w-9 h-9 bg-[#ef4444] rounded-lg flex items-center justify-center text-white text-base shadow-sm"><i class="fa-solid fa-circle-xmark"></i></div>
+                            <div>
+                                <p class="text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">Ditolak</p>
+                                <h4 class="text-lg font-black text-slate-800 leading-none">
+                                    {{ riwayat|selectattr('status_piket', 'equalto', 'tolak')|list|length }}
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+                    <div class="p-3.5 border-b border-slate-100 flex justify-between items-center bg-slate-50/60">
+                        <h3 class="font-bold text-slate-800 text-xs">Riwayat Dispensasi Saya</h3>
+                        <div class="relative">
+                            <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-[9px]"></i>
+                            <input type="text" placeholder="Cari kegiatan..." class="pl-7 pr-2 py-1 rounded-lg bg-white border border-slate-200 text-[11px] focus:ring-1 focus:ring-[#3b629b] outline-none w-48 shadow-inner">
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-[11px] border-collapse">
+                            <thead>
+                                <tr class="bg-[#4a6b9c] text-white font-bold uppercase tracking-wider text-[10px]">
+                                    <th class="px-3 py-2.5 text-center w-10">No.</th>
+                                    <th class="px-3 py-2.5">Kegiatan / Alasan</th>
+                                    <th class="px-3 py-2.5 w-1/4">Tanggal & Waktu</th>
+                                    <th class="px-3 py-2.5 w-1/4">Diajukan Oleh</th>
+                                    <th class="px-3 py-2.5 text-center w-28">Status Akhir</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 font-semibold text-slate-600">
+                                {% for d in riwayat %}
+                                <tr class="hover:bg-blue-50/30 transition-colors">
+                                    <td class="px-3 py-3 text-center text-slate-400 font-normal">{{ loop.index }}</td>
+                                    <td class="px-3 py-3 font-bold text-slate-900 text-xs break-words max-w-xs">
+                                        {{ d.kegiatan if d.kegiatan else d.alasan }}
+                                    </td>
+                                    <td class="px-3 py-3">
+                                        <div class="text-slate-800 font-bold"><i class="fa-regular fa-calendar-minus me-1 text-slate-400"></i> {{ d.tanggal if d.tanggal else '2026-05-25' }}</div>
+                                        <div class="text-slate-400 text-[10px] font-medium mt-0.5">
+                                            <i class="fa-regular fa-clock me-1"></i> Pukul {{ d.waktu_mulai if d.waktu_mulai else '00:00' }} - {{ d.waktu_selesai if d.waktu_selesai else '00:00' }} WIB
+                                        </div>
+                                    </td>
+                                    <td class="px-3 py-3 text-slate-700 font-medium">
+                                        <div class="flex items-center gap-1">
+                                            <i class="fa-solid fa-user-tie text-[10px] text-slate-400"></i>
+                                            <span>{{ d.pembina_nama if d.pembina_nama else 'Guru Pembina' }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-3 py-3 text-center">
+                                        {% if d.status_piket == 'setuju' %}
+                                            <span class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase bg-emerald-100 text-emerald-800"><i class="fa-solid fa-check me-0.5"></i> Disetujui</span>
+                                        {% elif d.status_piket == 'tolak' %}
+                                            <span class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase bg-rose-100 text-rose-800"><i class="fa-solid fa-xmark me-0.5"></i> Ditolak</span>
+                                        {% else %}
+                                            <span class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase bg-amber-100 text-amber-700"><i class="fa-solid fa-spinner fa-spin me-0.5"></i> Sedang Diproses</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="5" class="text-center py-10 text-slate-400 italic bg-white">
+                                        <i class="fa-solid fa-folder-open text-2xl block mb-2 opacity-20"></i>
+                                        Belum ada pengajuan dispensasi untuk Anda.
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-52 space-y-4 shrink-0">
+                <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-sm text-center">
+                    <p class="text-left text-[9px] font-black text-slate-400 uppercase tracking-wider mb-2.5">Profil Saya</p>
+
+                    <div class="w-14 h-14 rounded-full bg-blue-100 border-2 border-blue-200 mx-auto flex items-center justify-center overflow-hidden mb-2 shadow-inner">
+                        <img src="https://ui-avatars.com/api/?name={{ nama if nama else 'Siswa' }}&background=aec6cf&color=fff&size=128" alt="Avatar Siswa">
+                    </div>
+
+                    <h4 class="font-bold text-slate-800 text-xs tracking-wide leading-tight">{{ nama if nama else 'Nama Siswa' }}</h4>
+                    <p class="text-[9px] font-bold text-slate-500 mt-1">
+                        Kelas: <span class="text-[#3b629b]">{% if riwayat and riwayat[0].kelas_siswa %}{{ riwayat[0].kelas_siswa }}{% elif riwayat and riwayat[0].kelas %}{{ riwayat[0].kelas }}{% else %}X-2{% endif %}</span>
+                    </p>
+                </div>
+
+                <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-sm">
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-wider mb-1.5"><i class="fa-solid fa-circle-info text-[#3b629b] mr-1"></i> Informasi</p>
+                    <p class="text-[10px] text-slate-500 font-medium leading-relaxed">
+                        Riwayat di samping merupakan daftar dispensasi Anda. Jika status sudah <strong class="text-emerald-600">Disetujui</strong>, Anda sah mengikuti kegiatan di luar kelas reguler.
+                    </p>
+                </div>
+
+                <div class="bg-white border border-slate-200 rounded-xl p-3 flex items-center gap-2.5 shadow-sm">
+                    <div class="text-[#3b629b] text-sm bg-blue-50 w-7 h-7 flex items-center justify-center rounded-full shrink-0">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <div>
+                        <h5 class="text-[10px] font-bold text-slate-800 leading-tight">Perlu Bantuan?</h5>
+                        <p class="text-[9px] text-slate-400 font-medium leading-tight mt-0.5">Silahkan hubungi guru pembimbing Anda.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

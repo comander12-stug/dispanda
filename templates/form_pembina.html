@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Pengajuan Dispensasi - MAN 2 Kota Kediri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#f4f7fc] font-sans min-h-screen flex">
+
+    <div class="w-60 bg-[#3b629b] text-white flex flex-col justify-between p-4 shrink-0 relative overflow-hidden">
+        <div>
+            <div class="flex items-center gap-2.5 border-b border-white/20 pb-4 mb-5">
+              <img src="{{ url_for('static', filename='images/logo_man2.png') }}" alt="Logo MAN 2" class="w-9 h-9 object-contain shrink-0 filter drop-shadow-md">
+              <div>
+                <h1 class="text-[11px] font-bold uppercase tracking-wider leading-tight">DISPANDA</h1>
+                <p class="text-[9px] text-blue-100 font-light tracking-wide">DISPENSASI MAN 2 KOTA KEDIRI</p>
+              </div>
+            </div>
+
+            <p class="text-[9px] font-bold text-blue-200/70 uppercase tracking-widest mb-2.5 px-2">Menu Utama</p>
+            <nav class="space-y-1">
+                <a href="/dashboard/pembina" class="flex items-center gap-3 px-3 py-2 text-xs font-bold rounded-xl bg-white text-[#3b629b] shadow-sm transition">
+                    <i class="fa-solid fa-house text-xs"></i> Dashboard
+                </a>
+                <a href="/dashboard/pembina/ajukan" class="flex items-center gap-3 px-3 py-2 text-xs font-medium text-blue-100 hover:bg-white/10 rounded-xl transition">
+                    <i class="fa-solid fa-file-pen text-xs"></i> Pengajuan Dispensasi
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2 text-xs font-medium text-blue-100 hover:bg-white/10 rounded-xl transition">
+                    <i class="fa-solid fa-clock-rotate-left text-xs"></i> Riwayat Pengajuan
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2 text-xs font-medium text-blue-100 hover:bg-white/10 rounded-xl transition">
+                    <i class="fa-solid fa-user text-xs"></i> Profil
+                </a>
+            </nav>
+        </div>
+
+        <div>
+            <a href="/logout" class="flex items-center gap-4 px-4 py-3 text-sm font-bold text-red-200 hover:bg-red-900/20 rounded-xl transition mb-6">
+                <i class="fa-solid fa-right-from-bracket text-base"></i> Keluar
+            </a>
+            <div class="opacity-15 text-center transition hover:opacity-25 duration-300">
+                <i class="fa-solid fa-school text-7xl"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex-1 flex flex-col overflow-hidden">
+
+        <header class="bg-white border-b border-slate-200 px-8 py-5 flex justify-between items-center shrink-0">
+            <div>
+                <h2 class="text-2xl font-black text-slate-800">Selamat datang, <span class="text-[#3b629b]">Pembina Siswa</span></h2>
+                <p class="text-xs text-slate-400 font-semibold mt-0.5">Silakan isi formulir di bawah ini untuk mengajukan perizinan kegiatan.</p>
+            </div>
+            <div class="flex items-center gap-3 text-slate-600 bg-slate-50 px-4 py-2 rounded-xl border border-slate-200/60 text-xs font-bold">
+                <i class="fa-solid fa-calendar text-[#3b629b]"></i>
+                <span>Senin, 11 Mei 2026</span>
+                <span class="text-slate-300">|</span>
+                <span>07:00 WIB</span>
+            </div>
+        </header>
+
+        <div class="flex-1 p-8 overflow-y-auto flex gap-8 justify-center items-start">
+
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-8 flex-1 max-w-4xl space-y-8">
+
+                <div class="flex items-center gap-4 border-b border-slate-100 pb-5">
+                    <div class="w-12 h-12 bg-blue-50 text-[#3b629b] border border-blue-100 rounded-2xl flex items-center justify-center text-xl shadow-inner">
+                        <i class="fa-solid fa-file-signature"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-black text-slate-800">Formulir Pengajuan Dispensasi</h3>
+                        <p class="text-xs text-slate-400 font-semibold">Isi data delegasi atau alasan izin siswa secara mendetail.</p>
+                    </div>
+                </div>
+
+                <form method="POST" class="space-y-6 text-xs font-bold text-slate-700">
+
+                    <div class="grid grid-cols-3 items-center gap-4">
+                        <label class="text-slate-500 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-user text-[#3b629b] text-sm w-4"></i> Nama Siswa</label>
+                        <div class="col-span-2">
+                            <select name="siswa_id" class="w-full bg-slate-50/80 border border-slate-200 p-3 rounded-xl outline-none focus:ring-2 focus:ring-[#3b629b]/20 focus:border-[#3b629b] font-semibold text-slate-800 transition shadow-inner">
+                                {% for s in siswa_list %}
+                                <option value="{{ s.id }}">{{ s.nama }}</option>
+                                {% else %}
+                                <option value="1">Budi Santoso</option>
+                                <option value="2">Ahmad Dhani</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 items-center gap-4">
+                        <label class="text-slate-500 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-graduation-cap text-[#3b629b] text-sm w-4"></i> Kelas</label>
+                        <div class="col-span-2">
+                            <select name="kelas_siswa" class="w-full bg-slate-50/80 border border-slate-200 p-3 rounded-xl outline-none focus:ring-2 focus:ring-[#3b629b]/20 focus:border-[#3b629b] font-semibold text-slate-800 transition shadow-inner">
+                                <option value="X - 2">X - 2</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 items-center gap-4">
+                        <label class="text-slate-500 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-layer-group text-[#3b629b] text-sm w-4"></i> Jenis Kegiatan</label>
+                        <div class="col-span-2">
+                            <select name="tipe" class="w-full bg-slate-50/80 border border-slate-200 p-3 rounded-xl outline-none focus:ring-2 focus:ring-[#3b629b]/20 focus:border-[#3b629b] font-semibold text-slate-800 transition shadow-inner">
+                                <option value="internal">Internal (Lingkungan Madrasah)</option>
+                                <option value="eksternal">Eksternal (Perwakilan Luar Madrasah)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 items-center gap-4">
+                        <label class="text-slate-500 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-calendar-day text-[#3b629b] text-sm w-4"></i> Tanggal Perizinan</label>
+                        <div class="col-span-2">
+                            <input type="date" name="tanggal" class="w-full bg-slate-50/80 border border-slate-200 p-3 rounded-xl outline-none focus:ring-2 focus:ring-[#3b629b]/20 focus:border-[#3b629b] font-semibold text-slate-800 transition shadow-inner" required>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 items-center gap-4">
+                        <label class="text-slate-500 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-clock text-[#3b629b] text-sm w-4"></i> Waktu / Jam Pelajaran</label>
+                        <div class="col-span-2 flex items-center gap-3">
+                            <input type="time" name="waktu_mulai" class="flex-1 bg-slate-50/80 border border-slate-200 p-3 rounded-xl outline-none focus:ring-2 focus:ring-[#3b629b]/20 focus:border-[#3b629b] font-semibold text-slate-800 transition shadow-inner" required>
+                            <span class="text-slate-400 font-medium px-1">s/d</span>
+                            <input type="time" name="waktu_selesai" class="flex-1 bg-slate-50/80 border border-slate-200 p-3 rounded-xl outline-none focus:ring-2 focus:ring-[#3b629b]/20 focus:border-[#3b629b] font-semibold text-slate-800 transition shadow-inner" required>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 items-start gap-4">
+                        <label class="text-slate-500 uppercase tracking-wider flex items-center gap-2 mt-3"><i class="fa-solid fa-align-left text-[#3b629b] text-sm w-4"></i> Alasan Kegiatan</label>
+                        <div class="col-span-2">
+                            <textarea name="alasan" rows="4" placeholder="Contoh: Mengikuti pergelaran perlombaan PORPROV Jatim cabang catur di Kota Malang..." class="w-full bg-slate-50/80 border border-slate-200 p-3 rounded-xl outline-none focus:ring-2 focus:ring-[#3b629b]/20 focus:border-[#3b629b] font-semibold text-slate-800 transition placeholder:font-medium placeholder:italic shadow-inner" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center pt-6 border-t border-slate-100 gap-6">
+                        <div class="bg-blue-50/60 border border-blue-100/70 rounded-2xl p-4 flex gap-3 items-start max-w-md">
+                            <i class="fa-solid fa-circle-info text-[#3b629b] text-sm mt-0.5"></i>
+                            <div>
+                                <h5 class="text-[10px] font-black text-slate-700 uppercase mb-0.5">Catatan Validasi</h5>
+                                <p class="text-[9px] text-slate-400 font-semibold leading-normal">Pengajuan izin ber-tipe eksternal membutuhkan persetujuan berjenjang dari Guru Piket hingga validasi final oleh Waka Kesiswaan.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3 shrink-0">
+                            <button type="reset" class="px-5 py-3 border border-slate-200 text-slate-500 rounded-xl hover:bg-slate-50 transition font-bold flex items-center gap-2 shadow-sm">
+                                <i class="fa-solid fa-arrow-rotate-left"></i> Reset
+                            </button>
+                            <button type="submit" class="px-6 py-3 bg-[#3b629b] hover:bg-[#2e4f80] text-white rounded-xl transition font-bold flex items-center gap-2 shadow-md shadow-blue-900/10">
+                                <i class="fa-solid fa-paper-plane text-yellow-400"></i> Kirim Pengajuan
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
